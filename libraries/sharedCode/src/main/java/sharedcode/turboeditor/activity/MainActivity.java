@@ -122,7 +122,7 @@ import sharedcode.turboeditor.views.GoodScrollView;
 public abstract class MainActivity extends ActionBarActivity implements IHomeActivity, FindTextDialog
         .SearchDialogInterface, GoodScrollView.ScrollInterface, PageSystem.PageSystemInterface,
         PageSystemButtons.PageButtonsInterface, NumberPickerDialog.INumberPickerDialog, SaveFileDialog.ISaveDialog,
-        AdapterView.OnItemClickListener, AdapterDrawer.Callbacks, AccessoryView.IAccessoryView, EditTextDialog.EditDialogListener{
+        AdapterView.OnItemClickListener, AdapterDrawer.Callbacks, AccessoryView.IAccessoryView, EditTextDialog.EditDialogListener {
 
     //region VARIABLES
     private static final int READ_REQUEST_CODE = 42,
@@ -340,7 +340,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
                 final Uri data = intent.getData();
                 final GreatUri newUri = new GreatUri(data, AccessStorageApi.getPath(this, data), AccessStorageApi.getName(this, data));
 
-               // grantUriPermission(getPackageName(), data, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                // grantUriPermission(getPackageName(), data, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 final int takeFlags = intent.getFlags()
                         & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -460,7 +460,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
         } else if (i == R.id.im_save_normaly) {
             saveTheFile(false);
 
-        }  else if (i == R.id.im_save_as) {
+        } else if (i == R.id.im_save_as) {
             saveTheFile(true);
 
         } else if (i == R.id.im_rename) {
@@ -506,9 +506,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
             }
 
         } else if (i == R.id.im_view_markdown) {
-            Intent browserIntent = new Intent(MainActivity.this, MarkdownActivity.class);
-            browserIntent.putExtra("text", pageSystem.getAllText(mEditor.getText().toString()));
-            startActivity(browserIntent);
+
         } else if (i == R.id.im_info) {
             FileInfoDialog.newInstance(greatUri.getUri()).show(getFragmentManager().beginTransaction(), "dialog");
         } else if (i == R.id.im_donate) {
@@ -754,8 +752,8 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
                 || Intent.ACTION_PICK.equals(action)
                 && type != null) {
             // Post event
-           //newFileToOpen(new File(intent
-           //        .getData().getPath()), "");
+            //newFileToOpen(new File(intent
+            //        .getData().getPath()), "");
             Uri uri = intent.getData();
             GreatUri newUri = new GreatUri(uri, AccessStorageApi.getPath(this, uri), AccessStorageApi.getName(this, uri));
             newFileToOpen(newUri, "");
@@ -805,13 +803,13 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
         updateHandler.postDelayed(colorRunnable_duringEditing, SYNTAX_DELAY_MILLIS_LONG);
     }
 
-    private void refreshList(){
+    private void refreshList() {
         refreshList(null, false, false);
     }
 
     private void refreshList(@Nullable GreatUri thisUri, boolean add, boolean delete) {
         int max_recent_files = 15;
-        if(add)
+        if (add)
             max_recent_files--;
 
         // File paths saved in preferences
@@ -824,7 +822,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
         StringBuilder sb = new StringBuilder();
 
         // for cycle to convert paths to names
-        for(int i = 0; i < savedPaths.length; i++){
+        for (int i = 0; i < savedPaths.length; i++) {
             Uri particularUri = Uri.parse(savedPaths[i]);
             String name = AccessStorageApi.getName(this, particularUri);
             // Check that the file exist
@@ -850,7 +848,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
             //}
         }
         // if is not null, empty, we have to add something and we dont already have this uri
-        if(thisUri != null && !thisUri.getUri().equals(Uri.EMPTY) && add && !ArrayUtils.contains(savedPaths, thisUri.getUri().toString())) {
+        if (thisUri != null && !thisUri.getUri().equals(Uri.EMPTY) && add && !ArrayUtils.contains(savedPaths, thisUri.getUri().toString())) {
             sb.append(thisUri.getUri().toString()).append(",");
             greatUris.addFirst(thisUri);
         }
@@ -916,7 +914,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
                             isRootRequired = !newUri.isReadable();
                             // if we cannot read the file, root permission required
                             if (isRootRequired) {
-                               readUri(newUri.getUri(), filePath, true);
+                                readUri(newUri.getUri(), filePath, true);
                             }
                             // if we can read the file associated with the uri
                             else {
@@ -971,13 +969,13 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
                     }
 
                     InputStream inputStream = getContentResolver().openInputStream(uri);
-                    if(inputStream != null) {
+                    if (inputStream != null) {
                         buffer = new BufferedReader(new InputStreamReader(inputStream, encoding));
                     }
                 }
 
                 if (buffer != null) {
-                    while((line = buffer.readLine()) != null) {
+                    while ((line = buffer.readLine()) != null) {
                         stringBuilder.append(line);
                         stringBuilder.append("\n");
                     }
@@ -1011,7 +1009,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
                     else
                         getSupportActionBar().setTitle(fileName);
 
-                    if(greatUri != null) {
+                    if (greatUri != null) {
                         refreshList(greatUri, true, false);
                     }
                 }
@@ -1157,7 +1155,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
         }
     }
 
-   void aFileWasSelected(GreatUri uri) {
+    void aFileWasSelected(GreatUri uri) {
         arrayAdapter.selectPosition(uri);
     }
 
@@ -1169,7 +1167,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
     //region Calls from the layout
     public void OpenFile(View view) {
 
-        if (Device.hasKitKatApi()  && PreferenceHelper.getUseStorageAccessFramework(this)) {
+        if (Device.hasKitKatApi() && PreferenceHelper.getUseStorageAccessFramework(this)) {
             // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
             // browser.
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
@@ -1359,7 +1357,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
     @Override
     public void userDoesntWantToSave(boolean openNewFile, GreatUri newUri) {
         mEditor.fileSaved();
-        if(openNewFile)
+        if (openNewFile)
             newFileToOpen(newUri, "");
         else
             cannotOpenFile();
@@ -1398,8 +1396,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
                         savedAFile(greatUri, true);
                     }
                 }).execute();
-            }
-            else {
+            } else {
                 Toast.makeText(this, R.string.file_cannot_be_renamed, Toast.LENGTH_SHORT).show();
             }
         } else {
@@ -1421,8 +1418,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
                         savedAFile(greatUri, true);
                     }
                 }).execute();
-            }
-            else {
+            } else {
                 Toast.makeText(this, R.string.file_cannot_be_renamed, Toast.LENGTH_SHORT).show();
             }
         }
@@ -1590,7 +1586,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
                         0);
             }
             // add a padding from bottom
-            verticalScroll.setPadding(0,0,0,EditTextPadding.getPaddingBottom(context));
+            verticalScroll.setPadding(0, 0, 0, EditTextPadding.getPaddingBottom(context));
         }
 
         //region OVERRIDES
@@ -1855,8 +1851,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
             if (PreferenceHelper.getSyntaxHighlight(getContext())) {
                 setText(highlight(textToUpdate == null ? getEditableText() : Editable.Factory
                         .getInstance().newEditable(textToUpdate), textToUpdate != null));
-            }
-            else {
+            } else {
                 setText(textToUpdate == null ? getEditableText() : textToUpdate);
             }
 
@@ -1899,7 +1894,7 @@ public abstract class MainActivity extends ActionBarActivity implements IHomeAct
 
             if (!newText && editorHeight > 0) {
                 firstVisibleIndex = getLayout().getLineStart(lineUtils.getFirstVisibleLine(verticalScroll, editorHeight, lineCount));
-                lastVisibleIndex = getLayout().getLineEnd(lineUtils.getLastVisibleLine(verticalScroll, editorHeight, lineCount, deviceHeight)-1);
+                lastVisibleIndex = getLayout().getLineEnd(lineUtils.getLastVisibleLine(verticalScroll, editorHeight, lineCount, deviceHeight) - 1);
             } else {
                 firstVisibleIndex = 0;
                 lastVisibleIndex = CHARS_TO_COLOR;
